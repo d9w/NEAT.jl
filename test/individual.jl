@@ -16,7 +16,7 @@ cfg["innovation_max"] = 5
         @test c.weight < Inf && c.weight > -Inf
         push!(weights, c.weight)
         @test c.enabled || ~c.enabled
-        @test c.innovation > cfg["innovation_max"]
+        @test c.innovation <= cfg["innovation_max"]
         @test c.innovation <= length(ind.connections) + cfg["innovation_max"]
     end
 

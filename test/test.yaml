@@ -1,3 +1,5 @@
 n_in: 5
 n_out: 3
 d_fitness: 2
+innovation_max: 0
+hidden_neuron_nb: 0

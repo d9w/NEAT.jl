@@ -41,6 +41,7 @@ function NEATInd(cfg::Dict)
             push!(connections, c)
         end
     end
+    cfg["innovation_max"]= innovation
     neurons = Array{Neuron}(undef, 0)
     for i in 1:(n_in+n_out)
         push!(neurons, Neuron(0.0, 0.0, false))
