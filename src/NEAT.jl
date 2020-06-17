@@ -1,5 +1,9 @@
 module NEAT
 
-greet() = print("Hello World!")
+using Cambrian
+using YAML
+
+include("config.jl")
+include("individual.jl")
 
 end # module
