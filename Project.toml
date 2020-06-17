@@ -1,0 +1,4 @@
+name = "NEAT"
+uuid = "2ec0002f-e4a1-4800-bcee-0ea66feeae55"
+authors = ["Dennis Wilson <dennis@d9w.xyz>"]
+version = "0.1.0"
