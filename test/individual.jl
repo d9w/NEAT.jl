@@ -22,3 +22,24 @@ cfg["innovation_max"] = 5
 
     @test length(unique(weights)) > 1
 end
+
+
+@testset "Reconstruct individual" begin
+
+    ind = NEATInd(cfg)
+
+    string_ind = string(ind)
+    @test typeof(string_ind) == String
+
+    ind2 = NEATInd(cfg, string_ind)
+
+    for i in eachindex(ind.connections)
+        @test ind.connections[i].in_node == ind2.connections[i].in_node
+        @test ind.connections[i].out_node == ind2.connections[i].out_node
+        @test ind.connections[i].weight == ind2.connections[i].weight
+        @test ind.connections[i].enabled == ind2.connections[i].enabled
+        @test ind.connections[i].innovation == ind2.connections[i].innovation
+    end
+
+    @test all(ind.node_genes .== ind2.node_genes)
+end
