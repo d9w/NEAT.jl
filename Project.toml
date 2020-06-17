@@ -2,3 +2,8 @@ name = "NEAT"
 uuid = "2ec0002f-e4a1-4800-bcee-0ea66feeae55"
 authors = ["Dennis Wilson <dennis@d9w.xyz>"]
 version = "0.1.0"
+
+[deps]
+Cambrian = "7f27c84d-2d74-42e5-be5f-94f6748267f3"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"

@@ -28,7 +28,7 @@ function rand_weight()
 end
 
 function NEATInd(cfg::Dict)
-    innovation = 0
+    innovation = cfg["innovation_max"]
     n_in = cfg["n_in"]
     n_out = cfg["n_out"]
     node_genes = collect(1:(n_in+n_out))
