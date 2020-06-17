@@ -1,4 +1,5 @@
-export Connection, NEATInd
+export NEATInd
+import Base: print
 
 mutable struct Connection
     in_node::Int
@@ -44,6 +45,41 @@ function NEATInd(cfg::Dict)
     for i in 1:(n_in+n_out)
         push!(neurons, Neuron(0.0, 0.0, false))
     end
-    fitness = [-Inf]
+    fitness = -Inf .* ones(cfg["d_fitness"])
+    NEATInd(n_in, n_out, node_genes, connections, neurons, fitness)
+end
+
+# TODO: remove, already in abstracting branch of Cambrian.jl
+function print(io::IO, ind::NEATInd)
+    print(io, JSON.json(ind))
+end
+
+function String(ind::NEATInd)
+    string(ind)
+end
+
+function NEATInd(cfg::Dict, ind_s::String)
+    d = JSON.parse(ind_s)
+    n_in = d["n_in"]
+    n_out = d["n_out"]
+    node_genes = Int.(d["node_genes"])
+    connections = Array{Connection}(undef, 0)
+    for ci in d["connections"]
+        c = Connection(ci["in_node"], ci["out_node"],
+                       ci["weight"], ci["enabled"], ci["innovation"])
+        push!(connections, c)
+    end
+    neurons = Array{Neuron}(undef, 0)
+    for ni in d["neurons"]
+        push!(neurons, Neuron(ni["input"], ni["output"], ni["processed"]))
+    end
+    fitness = zeros(length(d["fitness"]))
+    for i in eachindex(d["fitness"])
+        if d["fitness"][i] == nothing
+            fitness[i] = -Inf
+        else
+            fitness[i] = Float64(d["fitness"][i])
+        end
+    end
     NEATInd(n_in, n_out, node_genes, connections, neurons, fitness)
 end
