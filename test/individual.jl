@@ -27,6 +27,12 @@ end
 @testset "Reconstruct individual" begin
 
     ind = NEATInd(cfg)
+    for c in ind.connections
+        c.weight = rand()
+        if rand() < 0.5
+            c.enabled = false
+        end
+    end
 
     string_ind = string(ind)
     @test typeof(string_ind) == String
@@ -42,4 +48,5 @@ end
     end
 
     @test all(ind.node_genes .== ind2.node_genes)
+    @test all(ind.fitness .== ind2.fitness)
 end
