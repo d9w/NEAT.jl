@@ -13,7 +13,9 @@ function test_individual(ind::NEATInd)
 
     outputs = process(ind, inputs)
     @test length(outputs) == cfg["n_out"]
-    @test all(outputs .== 0.5)
+    @test any(outputs .!= 0.0)
+    @test all(outputs .>= 0.0)
+    @test all(outputs .<= 1.0)
 
     inputs = 10 .* rand(cfg["n_in"])
     outputs = process(ind, inputs)

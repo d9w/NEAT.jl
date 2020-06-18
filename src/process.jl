@@ -27,10 +27,10 @@ function activation(x::Float64)
 end
 
 function process_neuron(ind::NEATInd, neuron::Int)
-    # speed up by storing input connections in neuron
+    # TODO: recurrent nodes based on genetic order?
     for c in ind.connections
         if c.enabled && c.out_node == neuron
-            if ~ind.neurons[c.in_node].processed
+            if ~ind.neurons[c.in_node].processed && c.in_node < c.out_node
                 process_neuron(ind, c.in_node)
             end
             ind.neurons[neuron].input += ind.neurons[c.in_node].output * c.weight
@@ -42,6 +42,9 @@ function process_neuron(ind::NEATInd, neuron::Int)
 end
 
 function run_neurons(ind::NEATInd)
+    for i in 1:ind.n_hidden
+        process_neuron(ind, ind.n_in + ind.n_out + i)
+    end
     for i in 1:ind.n_out
         process_neuron(ind, ind.n_in + i)
     end
