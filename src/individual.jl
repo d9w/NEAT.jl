@@ -18,7 +18,7 @@ end
 struct NEATInd <: Cambrian.Individual
     n_in::Int
     n_out::Int
-    node_genes::Array{Int}
+    n_hidden::Int
     connections::Array{Connection}
     neurons::Array{Neuron}
     fitness::Array{Float64}
@@ -32,7 +32,6 @@ function NEATInd(cfg::Dict)
     innovation = cfg["innovation_max"]
     n_in = cfg["n_in"]
     n_out = cfg["n_out"]
-    node_genes = collect(1:(n_in+n_out))
     connections = Array{Connection}(undef, 0)
     for i in 1:n_in
         for j in 1:n_out
@@ -47,7 +46,7 @@ function NEATInd(cfg::Dict)
         push!(neurons, Neuron(0.0, 0.0, false))
     end
     fitness = -Inf .* ones(cfg["d_fitness"])
-    NEATInd(n_in, n_out, node_genes, connections, neurons, fitness)
+    NEATInd(n_in, n_out, 0, connections, neurons, fitness)
 end
 
 # TODO: remove, already in abstracting branch of Cambrian.jl
@@ -63,7 +62,7 @@ function NEATInd(cfg::Dict, ind_s::String)
     d = JSON.parse(ind_s)
     n_in = d["n_in"]
     n_out = d["n_out"]
-    node_genes = Int.(d["node_genes"])
+    n_hidden = d["n_hidden"]
     connections = Array{Connection}(undef, 0)
     for ci in d["connections"]
         c = Connection(ci["in_node"], ci["out_node"],
@@ -82,5 +81,5 @@ function NEATInd(cfg::Dict, ind_s::String)
             fitness[i] = Float64(d["fitness"][i])
         end
     end
-    NEATInd(n_in, n_out, node_genes, connections, neurons, fitness)
+    NEATInd(n_in, n_out, n_hidden, connections, neurons, fitness)
 end

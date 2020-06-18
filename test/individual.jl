@@ -7,12 +7,10 @@ cfg["innovation_max"] = 5
     ind = NEATInd(cfg)
 
     n_nodes = cfg["n_in"] + cfg["n_out"]
-    @test length(ind.node_genes) == n_nodes
+    @test ind.n_hidden == 0
     @test length(ind.connections) == cfg["n_in"] * cfg["n_out"]
     weights = []
     for c in ind.connections
-        @test c.in_node <= maximum(ind.node_genes)
-        @test c.out_node <= maximum(ind.node_genes)
         @test c.weight < Inf && c.weight > -Inf
         push!(weights, c.weight)
         @test c.enabled || ~c.enabled
@@ -38,6 +36,9 @@ end
     @test typeof(string_ind) == String
 
     ind2 = NEATInd(cfg, string_ind)
+    @test ind.n_in == ind2.n_in
+    @test ind.n_out == ind2.n_out
+    @test ind.n_hidden == ind2.n_hidden
 
     for i in eachindex(ind.connections)
         @test ind.connections[i].in_node == ind2.connections[i].in_node
@@ -47,6 +48,5 @@ end
         @test ind.connections[i].innovation == ind2.connections[i].innovation
     end
 
-    @test all(ind.node_genes .== ind2.node_genes)
     @test all(ind.fitness .== ind2.fitness)
 end
