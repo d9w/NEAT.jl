@@ -11,6 +11,7 @@ cfg["innovation_max"] = 5
     @test length(ind.connections) == cfg["n_in"] * cfg["n_out"]
     weights = []
     for c in ind.connections
+        @test c.in_node < c.out_node
         @test c.weight < Inf && c.weight > -Inf
         push!(weights, c.weight)
         @test c.enabled || ~c.enabled
@@ -20,7 +21,6 @@ cfg["innovation_max"] = 5
 
     @test length(unique(weights)) > 1
 end
-
 
 @testset "Reconstruct individual" begin
 
@@ -36,17 +36,5 @@ end
     @test typeof(string_ind) == String
 
     ind2 = NEATInd(cfg, string_ind)
-    @test ind.n_in == ind2.n_in
-    @test ind.n_out == ind2.n_out
-    @test ind.n_hidden == ind2.n_hidden
-
-    for i in eachindex(ind.connections)
-        @test ind.connections[i].in_node == ind2.connections[i].in_node
-        @test ind.connections[i].out_node == ind2.connections[i].out_node
-        @test ind.connections[i].weight == ind2.connections[i].weight
-        @test ind.connections[i].enabled == ind2.connections[i].enabled
-        @test ind.connections[i].innovation == ind2.connections[i].innovation
-    end
-
-    @test all(ind.fitness .== ind2.fitness)
+    test_identical(ind, ind2)
 end

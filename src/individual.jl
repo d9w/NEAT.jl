@@ -36,7 +36,7 @@ function NEATInd(cfg::Dict)
     for i in 1:n_in
         for j in 1:n_out
             innovation += 1
-            c = Connection(i, j, rand_weight(), true, innovation)
+            c = Connection(i, n_in + j, rand_weight(), true, innovation)
             push!(connections, c)
         end
     end
@@ -47,6 +47,13 @@ function NEATInd(cfg::Dict)
     end
     fitness = -Inf .* ones(cfg["d_fitness"])
     NEATInd(n_in, n_out, 0, connections, neurons, fitness)
+end
+
+"""clone an individual and give new fitness values"""
+function NEATInd(ind::NEATInd)
+    ind2 = deepcopy(ind)
+    ind2.fitness .= -Inf
+    ind2
 end
 
 # TODO: remove, already in abstracting branch of Cambrian.jl
