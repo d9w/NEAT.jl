@@ -52,6 +52,10 @@ end
 """clone an individual and give new fitness values"""
 function NEATInd(ind::NEATInd)
     ind2 = deepcopy(ind)
+    for n in ind2.neurons
+        n.input = 0.0
+        n.output = 0.0
+    end
     ind2.fitness .= -Inf
     ind2
 end

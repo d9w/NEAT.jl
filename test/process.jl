@@ -2,8 +2,7 @@
 cfg = get_config("test.yaml")
 
 function test_individual(ind::NEATInd)
-    inputs = zeros(cfg["n_in"])
-
+    inputs = rand(cfg["n_in"])
     set_inputs(ind, inputs)
     @test ind.neurons[1].output == inputs[1]
 
@@ -11,6 +10,7 @@ function test_individual(ind::NEATInd)
     @test length(outputs) == cfg["n_out"]
     @test all(outputs .== 0.0)
 
+    inputs = zeros(cfg["n_in"])
     outputs = process(ind, inputs)
     @test length(outputs) == cfg["n_out"]
     @test any(outputs .!= 0.0)

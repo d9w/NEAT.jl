@@ -79,7 +79,7 @@ function mutate(indiv::NEATInd, cfg::Dict)
         return mutate_add_connection(indiv, cfg)
     elseif rand() < cfg["p_mutate_weights"]
         return mutate_weights(indiv, cfg)
-    elseif rand() < cfg["p_mutate_enable"]
+    elseif rand() < cfg["p_mutate_enabled"]
         return mutate_enabled(indiv, cfg)
     end
     # return clone if no mutation occurs

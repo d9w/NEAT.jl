@@ -9,7 +9,7 @@ end
 function set_inputs(ind::NEATInd, inputs::Array{Float64})
     # assume length(inputs) == ind.n_in
     for i in eachindex(inputs)
-        ind.neurons[i].output == inputs[i]
+        ind.neurons[i].output = inputs[i]
         ind.neurons[i].processed = true
     end
 end
